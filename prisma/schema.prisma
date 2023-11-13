@@ -1,0 +1,65 @@
+// Este es tu archivo de esquema Prisma actual
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  username   String   @unique
+  password   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  roles      Rol[]    // Roles asignados al usuario
+  carpetas   Carpeta[]
+  formularios Formulario[]
+}
+model Carpeta {
+  id          Int       @id @default(autoincrement())
+  nombre      String
+  createdAt   DateTime  @default(now())
+  archivos    Archivo[] 
+  subcarpetas Carpeta[] @relation("Subcarpetas")
+  padre       Carpeta?  @relation("Subcarpetas", fields: [padreId], references: [id])
+  padreId     Int?
+  usuario     User      @relation(fields: [usuarioId], references: [id])
+  usuarioId   Int
+}
+
+model Archivo {
+  id           Int      @id @default(autoincrement())
+  nombre       String
+  contenido    String
+  createdAt    DateTime @default(now())
+  carpeta      Carpeta  @relation(fields: [carpetaId], references: [id])
+  carpetaId    Int
+  rutaDescarga String
+}
+
+
+model Formulario {
+  ID            Int      @id @default(autoincrement())
+  Fecha         DateTime
+  Nombre        String
+  Grupo         Int
+  NombresGrupo  String
+  TipoTrabajo   String
+  TrabajoRealizado String
+  Ubicacion     String
+  Observacion   String?
+  CreateAt      DateTime @default(now())
+  UsuarioID     Int
+  Usuario       User     @relation(fields: [UsuarioID], references: [id])
+}
+
+model Rol {
+  id      Int    @id @default(autoincrement())
+  name    String
+  usuario User[] // Usuarios asociados al rol
+}
