@@ -2,7 +2,7 @@ import StickyHeadTable from './tabla'
 import axios from 'axios'
 
 async function LoadUsers() {
-    const result = await axios.get('/api/formularios')
+    const result = await axios.get('monorail.proxy.rlwy.net:24690/api/formularios')
     return(result.data)
 }
 
