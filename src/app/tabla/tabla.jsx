@@ -21,13 +21,13 @@ import { DatePicker } from 'antd';
 import * as XLSX from 'xlsx';
 
 async function LoadFormularios() {
-  const response = await fetch('http://localhost:3000/api/formularios');
+  const response = await fetch('/api/formularios');
   const data = await response.json();
   return data;
 }
 
 async function updateFormulario(id, data) {
-  const response = await fetch(`http://localhost:3000/api/formularios/${id}`, {
+  const response = await fetch(`/api/formularios/${id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ async function updateFormulario(id, data) {
 }
 
 async function deleteFormulario(id) {
-  const response = await fetch(`http://localhost:3000/api/formularios/${id}`, {
+  const response = await fetch(`/api/formularios/${id}`, {
     method: 'DELETE',
   });
   const deletedData = await response.json();

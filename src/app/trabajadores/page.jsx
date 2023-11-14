@@ -33,7 +33,7 @@ const Trabajadores = () => {
 
   const fetchHistorialData = async (userId) => {
     try {
-      const response = await axios.get('http://localhost:3000/api/formularios');
+      const response = await axios.get('/api/formularios');
       const userFormularios = response.data.filter(entry => entry.UsuarioID === userId);
       setHistorial(userFormularios);
     } catch (error) {
@@ -43,7 +43,7 @@ const Trabajadores = () => {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/profile');
+      const response = await axios.get('/api/profile');
       setUsers(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -81,7 +81,7 @@ const Trabajadores = () => {
 
     try {
       for (const id of selectedHistorial) {
-        await axios.delete(`http://localhost:3000/api/formularios/${id}`);
+        await axios.delete(`/api/formularios/${id}`);
       }
 
       fetchHistorialData(expandedUser);

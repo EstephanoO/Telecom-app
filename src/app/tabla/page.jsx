@@ -2,7 +2,7 @@ import StickyHeadTable from './tabla'
 import axios from 'axios'
 
 async function LoadUsers() {
-    const result = await axios.get('http://localhost:3000/api/formularios')
+    const result = await axios.get('/api/formularios')
     return(result.data)
 }
 
