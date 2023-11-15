@@ -6,7 +6,7 @@ const ListaRA = () => {
     useEffect(() => {
       const fetchFormData = async () => {
         try {
-          const response = await fetch('http://localhost:3000/api/formularios');
+          const response = await fetch(`${API_URL}/formularios`);
           if (response.ok) {
             const data = await response.json();
             setFormData(data);

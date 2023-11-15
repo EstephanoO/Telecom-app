@@ -16,6 +16,9 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Checkbox from '@mui/material/Checkbox';
 import TablePagination from '@mui/material/TablePagination';
 import axios from 'axios';
+import settings from '@/libs/settings'
+
+const API_URL = settings.apiUrl;
 
 const Trabajadores = () => {
   const [expandedUser, setExpandedUser] = useState(null);
@@ -33,7 +36,7 @@ const Trabajadores = () => {
 
   const fetchHistorialData = async (userId) => {
     try {
-      const response = await axios.get('https://telecomprueba-production.up.railway.app/formularios');
+      const response = await axios.get(`${API_URL}/formularios`);
       const userFormularios = response.data.filter(entry => entry.UsuarioID === userId);
       setHistorial(userFormularios);
     } catch (error) {
@@ -43,7 +46,7 @@ const Trabajadores = () => {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get('https://telecomprueba-production.up.railway.app/user');
+      const response = await axios.get(`${API_URL}/users`);
       setUsers(response.data);
     } catch (error) {
       console.error('Error fetching user data:', error);
@@ -81,7 +84,7 @@ const Trabajadores = () => {
 
     try {
       for (const id of selectedHistorial) {
-        await axios.delete(`https://telecomprueba-production.up.railway.app/formularios/${id}`);
+        await axios.delete(`${API_URL}/formularios/${id}`);
       }
 
       fetchHistorialData(expandedUser);
@@ -193,7 +196,6 @@ const Trabajadores = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell></TableCell>
               <TableCell></TableCell>
               <TableCell></TableCell>
               <TableCell></TableCell>

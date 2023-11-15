@@ -6,16 +6,15 @@ import RolesWindow from './RolesWindow';
 
 const SettingsPage = () => {
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" className=' bg-neutral-800'>
       <Typography variant="h4" gutterBottom className='mt-4'>
         Settings
       </Typography>
-
-      <Grid container spacing={4}>
-        <Grid item xs={12} md={6}>
-          <UsersWindow />
+      <Grid>
+        <Grid className=' mb-4'>
+          <UsersWindow/>
         </Grid>
-        <Grid item xs={12} md={6}>
+        <Grid>
           <RolesWindow />
         </Grid>
       </Grid>

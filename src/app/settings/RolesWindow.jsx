@@ -16,22 +16,24 @@ import TableCell from '@mui/material/TableCell';
 import Paper from '@mui/material/Paper';
 import Card from '@mui/material/Card';
 
+import Box from '@mui/material/Box';
+
+import settings from '@/libs/settings';
+
+const API_URL = settings.apiUrl;
+
 const RolesWindow = () => {
   const [newRoleName, setNewRoleName] = useState('');
-  const [selectedRole, setSelectedRole] = useState('');
   const [roles, setRoles] = useState([]);
 
-  // Function to fetch roles from the API
   const fetchRoles = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/api/roles');
+      const response = await axios.get(`${API_URL}/roles`);
       setRoles(response.data);
     } catch (error) {
       console.error('Error fetching roles:', error);
     }
   };
-
-
 
   useEffect(() => {
     fetchRoles();
@@ -39,10 +41,10 @@ const RolesWindow = () => {
 
   const handleCreateRole = async () => {
     try {
-      // Usar 'name' en lugar de 'roleName' en el cuerpo de la solicitud
-      const response = await axios.post('http://localhost:3000/api/roles', { name: newRoleName });
+      const response = await axios.post(`${API_URL}/roles`, { name: newRoleName });
       console.log('Role created:', response.data);
-      fetchRoles(); // Actualizar la lista de roles
+      fetchRoles();
+      setNewRoleName('');
     } catch (error) {
       console.error('Error creating role:', error);
     }
@@ -50,9 +52,9 @@ const RolesWindow = () => {
 
   const handleUpdateRoleName = async (roleId, newRoleName) => {
     try {
-      const response = await axios.put(`http://localhost:3000/api/roles/${roleId}`, { roleName: newRoleName });
+      const response = await axios.put(`${API_URL}/roles/${roleId}`, { name: newRoleName });
       console.log('Role updated:', response.data);
-      fetchRoles(); // Refresh the roles list
+      fetchRoles();
     } catch (error) {
       console.error('Error updating role name:', error);
     }
@@ -60,74 +62,70 @@ const RolesWindow = () => {
 
   const handleDeleteRole = async (roleId) => {
     try {
-      const response = await axios.delete(`http://localhost:3000/api/roles/${roleId}`);
+      const response = await axios.delete(`${API_URL}/roles/${roleId}`);
       console.log('Role deleted:', response.data);
-      fetchRoles(); // Refresh the roles list
+      fetchRoles();
     } catch (error) {
       console.error('Error deleting role:', error);
     }
   };
 
   return (
-    <Card className=' bg-white p-8 mr-12 shadow-lg shadow-black' sx={{width:'auto'}}>
-    <div>
-      <Typography variant="h5" gutterBottom>
-        Manage Roles
-      </Typography>
-      <TextField
-        label="New Role Name"
-        variant="outlined"
-        fullWidth
-        value={newRoleName}
-        onChange={(e) => setNewRoleName(e.target.value)}
-      />
-
-      <div className="mt-2">
+    <Card className='bg-white p-8 mr-12 shadow-lg shadow-black' sx={{ width: 'auto' }}>
+      <Box>
+        <Typography variant="h5" gutterBottom>
+          Manage Roles
+        </Typography>
+        <TextField
+          label="New Role Name"
+          variant="outlined"
+          fullWidth
+          value={newRoleName}
+          onChange={(e) => setNewRoleName(e.target.value)}
+          sx={{ mb: 2 }}
+        />
         <Button
           variant="contained"
           color="primary"
-          className='bg-slate-400'
           onClick={handleCreateRole}
+          sx={{ mb: 2 }}
         >
           Create Role
         </Button>
-      </div>
-
-      <TableContainer component={Paper} className="mt-4">
-  <Table>
-    <TableHead>
-      <TableRow>
-        <TableCell>Role</TableCell>
-        <TableCell>Count</TableCell>
-        <TableCell>Action</TableCell>
-      </TableRow>
-    </TableHead>
-    <TableBody>
-      {roles.map((role) => (
-        <TableRow key={role.id}>
-          <TableCell
-            contentEditable
-            suppressContentEditableWarning
-            onBlur={(e) => handleUpdateRoleName(role.id, e.target.innerText)}
-          >
-            {role.name}
-          </TableCell>
-          <TableCell>{role.count}</TableCell>
-          <TableCell>
-            <IconButton
-              color="secondary"
-              onClick={() => handleDeleteRole(role.id)}
-            >
-              <DeleteIcon
-               />
-            </IconButton>
-          </TableCell>
-        </TableRow>
-      ))}
-    </TableBody>
-  </Table>
-</TableContainer>
-    </div>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Role</TableCell>
+                <TableCell>Count</TableCell>
+                <TableCell>Action</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {roles.map((role) => (
+                <TableRow key={role.id}>
+                  <TableCell
+                    contentEditable
+                    suppressContentEditableWarning
+                    onBlur={(e) => handleUpdateRoleName(role.id, e.target.innerText)}
+                  >
+                    {role.name}
+                  </TableCell>
+                  <TableCell>{role.count}</TableCell>
+                  <TableCell>
+                    <IconButton
+                      color="secondary"
+                      onClick={() => handleDeleteRole(role.id)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
     </Card>
   );
 };

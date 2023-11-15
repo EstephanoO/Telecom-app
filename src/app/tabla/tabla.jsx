@@ -19,15 +19,18 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete';
 import { DatePicker } from 'antd';
 import * as XLSX from 'xlsx';
+import settings from '@/libs/settings'
+
+const API_URL = settings.apiUrl;
 
 async function LoadFormularios() {
-  const response = await fetch('https://telecomprueba-production.up.railway.app/formularios');
+  const response = await fetch(`${API_URL}/formularios`);
   const data = await response.json();
   return data;
 }
 
 async function updateFormulario(id, data) {
-  const response = await fetch(`https://telecomprueba-production.up.railway.app/formularios/${id}`, {
+  const response = await fetch(`${API_URL}/formularios/${id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
@@ -39,7 +42,7 @@ async function updateFormulario(id, data) {
 }
 
 async function deleteFormulario(id) {
-  const response = await fetch(`https://telecomprueba-production.up.railway.app/formularios/${id}`, {
+  const response = await fetch(`${API_URL}/formularios/${id}`, {
     method: 'DELETE',
   });
   const deletedData = await response.json();

@@ -3,6 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Col, Row, Statistic } from 'antd';
 import ChartPage from './chart';
+import settings from '@/libs/settings'
+import axios from 'axios'
+
+const API_URL = settings.apiUrl;
 
 const PlaygroundPage = () => {
   const [formData, setFormData] = useState([]);
@@ -10,21 +14,15 @@ const PlaygroundPage = () => {
   useEffect(() => {
     const fetchFormData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/formularios');
-        if (response.ok) {
-          const data = await response.json();
-          setFormData(data);
-        } else {
-          console.error('Error al obtener datos de formularios');
-        }
+        const response = await axios.get(`${API_URL}/formularios`);
+        setFormData(response.data);
       } catch (error) {
-        console.error('Error al obtener datos de formularios: ' + error);
+        console.error('Error fetching historical data:', error);
       }
     };
 
     fetchFormData();
   }, []);
-
 
   const dpFormData = formData.filter((formulario) => formulario.TipoTrabajo === 'DP');
   const rpFormData = formData.filter((formulario) => formulario.TipoTrabajo === 'RD');
@@ -32,7 +30,6 @@ const PlaygroundPage = () => {
   const bbFormData = formData.filter((formulario) => formulario.TipoTrabajo === 'BACKBONE');
   const instFormData = formData.filter((formulario) => formulario.TipoTrabajo === 'INSTALACIONES');
   const actFormData = formData.filter((formulario) => formulario.TipoTrabajo === 'ACTIVACIONES');
-
   const today = new Date();
   const oneDayAgo = new Date(today.getTime() - 24 * 60 * 60 * 1000);
   const oneWeekAgo = new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000);
