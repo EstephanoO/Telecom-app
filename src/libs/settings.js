@@ -1,7 +1,7 @@
 // settings.js
 
 const settings = {
-    apiUrl: 'http://localhost:3000', // Aquí coloca la URL de tu API
+    apiUrl: 'https://telecomprueba-production.up.railway.app', // Aquí coloca la URL de tu API
   };
   
   export default settings;
